@@ -1,0 +1,84 @@
+﻿@model PediosEvertec.Models.Pedido
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h4>Producto</h4>
+
+    <hr />
+
+    <div style="  display: inline-block;
+        margin-right: 50px;
+        height: 160px;
+        width: 140px;
+        padding: 5px;
+        border: 1px solid gainsboro;">
+        <p style=" text-align:center"> <img style=" height: 60px; width: 60px;" src=@ViewBag.product.image_url_product /></p>
+        <p style="text-align:center">
+            @ViewBag.product.name_product
+        </p>
+        <p style="text-align:center">
+            $@string.Format("{0:N0}", ViewBag.product.value_product)
+
+        </p>
+    </div>
+    <hr />
+
+
+    <div class="form-horizontal">
+        <h4>Cerrar Pedido</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.product_id,
+                new { id = "hdProductoID", Value = ViewBag.product.id });
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.customer_document, "Identificacion", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.customer_document, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_document, "", new { @class = "text-danger" })
+            </div>
+           
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.customer_name, "Nombre", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.customer_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_name, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(model => model.customer_lastname, "Apellido", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.customer_lastname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_lastname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.customer_email, "Email", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.customer_email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_email, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(model => model.customer_mobile, "Telefono Celular", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.customer_mobile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.customer_mobile, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+

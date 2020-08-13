@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PediosEvertec.Models.product>
+
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Productos</h2>
+
+
+@foreach (var item in Model)
+{
+<div style="  display: inline-block;
+        margin-right: 50px;
+        height: 160px;
+        width: 140px;
+        padding: 5px;
+        border: 1px solid gainsboro;">
+    <p style=" text-align:center"> <img style=" height: 60px; width: 60px;" src=@item.image_url_product /></p>
+    <p style="text-align:center">
+        @item.name_product
+    </p>
+    <p style="text-align:center">
+        $@string.Format("{0:N0}", item.value_product.Value)
+
+    </p>
+    
+    <p style="float:right">
+        @Html.ActionLink("Comprar", "Create", "Pedidoes", new { id = item.id }, new { @style = "float:right;" })
+    </p>
+
+</div>
+}
+
