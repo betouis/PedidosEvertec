@@ -55,6 +55,7 @@ namespace PediosEvertec.Controllers
         {
             if (ModelState.IsValid)
             {
+                string url = Request.Url.GetLeftPart(UriPartial.Authority) + "/";
                 PediosEvertec.IntegracionEvertec.IntegracionEvertec integracion =
                     new PediosEvertec.IntegracionEvertec.IntegracionEvertec();
                 pedido.created_at = DateTime.Now;
@@ -63,7 +64,7 @@ namespace PediosEvertec.Controllers
                 product pr = db.product.Where(x => x.id == pedido.product_id).FirstOrDefault();
                 db.Pedido.Add(pedido);
                 db.SaveChanges();
-                ResponseEvertecPago pago = await integracion.InitAsync(pedido, pr.name_product, pr.value_product.Value);
+                ResponseEvertecPago pago = await integracion.InitAsync(url, pedido, pr.name_product, pr.value_product.Value);
                 pedido.processUrl = pago.processUrl;
                 pedido.fechaProcess = DateTime.Now;
                 pedido.requestId = pago.requestId;
@@ -80,7 +81,7 @@ namespace PediosEvertec.Controllers
         }
 
         // GET: Pedidoes/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -91,7 +92,10 @@ namespace PediosEvertec.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.product_id = new SelectList(db.product, "id", "code_product", pedido.product_id);
+            PediosEvertec.IntegracionEvertec.IntegracionEvertec ie = new PediosEvertec.IntegracionEvertec.IntegracionEvertec();
+            ResponseEvertecPago respuesta = await ie.EstadoAsync(pedido);
+            pedido.status = respuesta.status.status;
+            db.SaveChanges();
             return View(pedido);
         }
 
